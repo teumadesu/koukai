@@ -46,17 +46,20 @@
   </div>
 
   <script>
-    const imgs = Array.from(document.querySelectorAll('img.gallery'));
-    let idx = 0;
-
-    imgs.forEach((img, i) => img.onclick = () => show(i));
-
+    let group = [], idx = 0;
+    document.querySelectorAll('img.gallery').forEach(img => {
+      img.onclick = () => {
+        group = Array.from(img.closest('.box').querySelectorAll('img.gallery'));
+        show(group.indexOf(img));
+      };
+    });
     function show(i) {
-      idx = (i + imgs.length) % imgs.length;
-      document.getElementById('modalImg').src = imgs[idx].src;
+      idx = (i + group.length) % group.length;
+      document.getElementById('modalImg').src = group[idx].src;
       document.getElementById('modal').style.display = 'flex';
+      let m = group.length > 1 ? 'block' : 'none';
+      prev.style.display = next.style.display = m;
     }
-
     function move(step) { show(idx + step); }
   </script>
 </body>
